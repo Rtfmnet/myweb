@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload and Show Text File</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        #fileContent { margin-top: 20px; white-space: pre-wrap; border: 1px solid #ccc; padding: 10px; }
+        button { margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <h2>Upload and Display Text File</h2>
+    <input type="file" id="fileInput" accept=".txt" style="display:none" />
+    <button onclick="document.getElementById('fileInput').click()">Upload Text File</button>
+    <button onclick="showFileContent()">Show Uploaded File</button>
+    <div id="fileContent"></div>
+
+    <script>
+        let uploadedText = "";
+
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file && file.type === "text/plain") {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    uploadedText = e.target.result;
+                    document.getElementById('fileContent').textContent = "File uploaded successfully! Click 'Show Uploaded File' to view its content.";
+                };
+                reader.readAsText(file);
+            } else {
+                document.getElementById('fileContent').textContent = "Please upload a valid .txt file.";
+            }
+        });
+
+        function showFileContent() {
+            if (uploadedText) {
+                document.getElementById('fileContent').textContent = uploadedText;
+            } else {
+                document.getElementById('fileContent').textContent = "No file uploaded yet.";
+            }
+        }
+    </script>
+</body>
